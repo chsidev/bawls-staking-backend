@@ -1,7 +1,7 @@
 import { Connection, PublicKey, SystemProgram } from '@solana/web3.js';
 import { AnchorProvider, Program, Idl } from '@coral-xyz/anchor';
 import bs58 from 'bs58';
-import idl from '../../../bawls_staking_program/target/idl/bawls_staking.json';
+import idl from '../idl/bawls_staking.json';
 
 const RPC_URL = 'https://api.devnet.solana.com';
 const connection = new Connection(RPC_URL, 'confirmed');
