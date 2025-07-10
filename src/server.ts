@@ -7,17 +7,13 @@ import { addHistoryEntry, getUserHistory, getAllHistory } from './services/histo
 import 'dotenv/config';
 import { PublicKey } from '@solana/web3.js';
 import { HistoryEntryBody } from './models/HistoryEntry';
+import { ErrorRequestHandler } from 'express';
 
 const app = express();
-const PORT = 3000;
-
-// app.options('*', cors({
-//   origin: 'http://localhost:4200',
-//   credentials: true,
-// }));
+const PORT = process.env.PORT || 3000;
 
 app.use(cors({
-  origin: 'http://localhost:4200',
+  origin: process.env.ALLOWED_ORIGIN?.split(',') || '*',
   credentials: true,
 }));
 app.use(express.json());
@@ -109,11 +105,13 @@ app.post('/api/history', (req: Request, res: Response, next: NextFunction) => {
   })();
 });
 
-app.use((err: any, req: any, res: any, next: any) => {
-  console.error('❌ API Error:', err);
-  res.status(500).json({ error: 'Internal Server Error', details: err.message });
-});
+const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
+  console.error(' API Error:', err);
+  res.status(500).json({ error: 'Internal Server Error', details: err?.message });
+};
+
+app.use(errorHandler);
 
 app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
+  console.log(`Server running on Port:${PORT}`);
 });
