@@ -11,25 +11,25 @@ import { ErrorRequestHandler } from 'express';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const allowedOrigins = process.env.CORS_ORIGIN?.split(',') || [];
-
-// app.use(cors({
-//   origin: process.env.CORS_ORIGIN?.split(',') || '*',
-//   credentials: true,
-// }));
+const allowedOrigin = process.env.CORS_ORIGIN;
 
 app.use(cors({
-  origin: (origin, callback) => {
-    if (!origin) return callback(null, true);
-
-    if (allowedOrigins.includes(origin)) {
-      return callback(null, true);
-    } else {
-      return callback(new Error(`Not allowed by CORS: ${origin}`));
-    }
-  },
+  origin: allowedOrigin,
   credentials: true,
 }));
+
+// app.use(cors({
+//   origin: (origin, callback) => {
+//     if (!origin) return callback(null, true);
+
+//     if (allowedOrigins.includes(origin)) {
+//       return callback(null, true);
+//     } else {
+//       return callback(new Error(`Not allowed by CORS: ${origin}`));
+//     }
+//   },
+//   credentials: true,
+// }));
 app.use(express.json());
 app.set('json spaces', 2);
 
